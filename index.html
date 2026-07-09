@@ -119,21 +119,34 @@
     background: var(--board); color: var(--board-ink); border: 1px solid var(--board); box-shadow: var(--shadow); }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
-  /* Phone layout: reclaim width, full-width search, calmer spacing */
-  @media (max-width: 600px) {
-    .wrap { padding: 0 14px 80px; }
-    header.masthead { padding: 26px 0 18px; }
-    .sub { font-size: 14px; }
+  /* Phone layout: full-width stacked cards, time as a slot header, larger type */
+  @media (max-width: 640px) {
+    .wrap { padding: 0 12px 84px; }
+    header.masthead { padding: 24px 0 18px; }
+    .sub { font-size: 14.5px; }
     .stat { flex: 1 1 46%; padding: 11px 13px; }
     .stat .v { font-size: 19px; }
     .controls { flex-wrap: wrap; gap: 10px; padding: 14px 0 10px; }
     .legend { order: 1; gap: 12px; }
-    .search { order: 2; margin-left: 0; flex-basis: 100%; max-width: none; }
-    li.slot { grid-template-columns: 44px 1fr; gap: 14px; padding-bottom: 20px; }
-    .time { font-size: 13px; }
-    .card { padding: 11px 13px; }
+    .search { order: 2; margin-left: 0; flex-basis: 100%; max-width: none;
+      font-size: 16px; padding: 11px 13px; }        /* 16px prevents iOS focus-zoom */
+
+    /* Drop the 2-column grid: time becomes a header row above full-width cards */
+    li.slot { display: block; padding: 0 0 22px; }
+    .time { display: flex; align-items: baseline; gap: 7px; text-align: left;
+      font-size: 16px; letter-spacing: 0; padding: 2px 2px 9px; }
+    .time .end { display: inline; margin-top: 0; font-size: 13px; }
+    .time .end::before { content: "\2192\00a0"; }   /* → before end time */
+
+    .stack { gap: 11px; }
+    .card { padding: 14px 15px; border-radius: 13px; }
+    .card.feat { box-shadow: var(--shadow), inset 4px 0 0 var(--accent); }
+    .kicker { gap: 6px; margin-bottom: 8px; }
+    .pill { font-size: 10.5px; padding: 3px 8px; }
+    .title { font-size: 16.5px; line-height: 1.35; }
+    .who { font-size: 14px; margin-top: 7px; }
     .title, .who { overflow-wrap: anywhere; }
-    .toggle { right: 12px; bottom: 12px; }
+    .toggle { right: 12px; bottom: 12px; padding: 11px 15px; font-size: 13px; }
   }
 </style>
 
