@@ -37,6 +37,15 @@
   header.masthead { border-bottom: 2px solid var(--ink); padding: 40px 0 22px; }
   .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .18em;
     text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+
+  .dayswitch { display: inline-flex; gap: 4px; margin: 0 0 16px; padding: 4px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+  .dbtn { font-family: var(--mono); font-size: 12px; letter-spacing: .04em; font-weight: 600;
+    padding: 7px 15px; border-radius: 7px; cursor: pointer; color: var(--meta);
+    background: transparent; border: 0; transition: background .15s, color .15s; }
+  .dbtn:hover { color: var(--ink); }
+  .dbtn[aria-selected="true"] { background: var(--accent); color: #fff; }
+  .dbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   h1 { font-size: clamp(30px, 5.4vw, 50px); line-height: 1.02; margin: 0;
     font-weight: 800; letter-spacing: -.02em; text-wrap: balance; }
   .sub { margin: 16px 0 0; color: var(--meta); font-size: 15px; max-width: 62ch; }
@@ -182,14 +191,17 @@
 
 <div class="wrap">
   <header class="masthead">
-    <p class="eyebrow">My picks &middot; Day 1</p>
+    <div class="dayswitch" role="tablist" aria-label="Choose day">
+      <button class="dbtn" id="btn-thu" role="tab" data-day="thu">Thu 9 Jul</button>
+      <button class="dbtn" id="btn-fri" role="tab" data-day="fri">Fri 10 Jul</button>
+    </div>
     <h1>My WeAreDevelopers 2026 Schedule</h1>
-    <p class="sub">Your 33 saved sessions, all on <strong>Thursday 9 July</strong> at the CityCube, Berlin. Slots with more than one pick are <strong>clashes</strong> &mdash; you can only be in one room, so choose. Times in Berlin (CEST).</p>
+    <p class="sub" id="sub"></p>
     <div class="stats">
-      <div class="stat"><div class="v">33</div><div class="l">Saved sessions</div></div>
-      <div class="stat"><div class="v">13</div><div class="l">Time slots</div></div>
-      <div class="stat"><div class="v warn">8</div><div class="l">Clashing slots</div></div>
-      <div class="stat"><div class="v">10:10&ndash;18:00</div><div class="l">First &rarr; last</div></div>
+      <div class="stat"><div class="v" id="v-saved">&ndash;</div><div class="l">Saved sessions</div></div>
+      <div class="stat"><div class="v" id="v-slots">&ndash;</div><div class="l">Time slots</div></div>
+      <div class="stat"><div class="v warn" id="v-clash">&ndash;</div><div class="l">Clashing slots</div></div>
+      <div class="stat"><div class="v" id="v-span">&ndash;</div><div class="l">First &rarr; last</div></div>
     </div>
   </header>
 
@@ -206,7 +218,7 @@
   <ol class="tl" id="tl"></ol>
 
   <footer>
-    Built from your saved-session list (33 IDs) cross-referenced with the full catalog. &#9654; links to a recording search. Every pick is on Day 1 &mdash; nothing saved for the pre-day or Day 2. Want me to auto-resolve clashes into one recommended track, add walking gaps between rooms, or export this as a calendar (.ics)? Say the word.
+    Built from your saved-session list cross-referenced with the full catalog. &#9654; links to a recording search. Use the <strong>Thu / Fri</strong> switch above to flip between days &mdash; your choice is remembered, and the page opens on whichever day is live. <strong>Friday is empty until you send me your Day-2 picks.</strong> Want me to auto-resolve clashes into one recommended track, add walking gaps between rooms, or export this as a calendar (.ics)? Say the word.
   </footer>
 </div>
 
@@ -215,8 +227,8 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-  // Your 27 saved sessions, resolved against the catalog. t/e = Berlin (CEST).
-  const S = [
+  // Your saved sessions, resolved against the catalog. t/e = Berlin (CEST).
+  const THU = [
     {id:588,t:"10:10",e:"10:40",st:"Mainstage",title:"The AI-Native Engineering Org: What’s Real, What’s Hype, What’s Next",who:"<b>Taroon Mandhana</b> · CTO AI & Teamwork, Atlassian",ty:"keynote",feat:1},
     {id:590,t:"10:10",e:"10:40",st:"Stage 2",title:"You Will Migrate Eventually: A Developer Approach to Tech Adoption",who:"<b>Luisa Rink</b> & <b>Wouter Ligtenberg</b> · ING",ty:"talk"},
     {id:593,t:"10:10",e:"10:40",st:"Stage 5",title:"Goodbye Microservices, Hello Self-Contained Systems",who:"<b>Simon Martinelli</b>",ty:"talk"},
@@ -264,6 +276,22 @@
     {id:809,t:"17:30",e:"18:00",st:"Stage 10",sp:"TikTok",title:"Post-Quantum Cryptography: Preparing for Q-Day",who:"<b>Tim Schade</b> · GFT Technologies",ty:"talk"}
   ];
 
+  // Friday (Day 2) picks — waiting on your saved list. Same shape as THU above.
+  const FRI = [
+  ];
+
+  const DAYS = {
+    thu: { key:"thu", tab:"Thu 9 Jul", long:"Thursday 9 July", date:"2026-07-09", S: THU },
+    fri: { key:"fri", tab:"Fri 10 Jul", long:"Friday 10 July",  date:"2026-07-10", S: FRI }
+  };
+  const todayKey = () => new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Berlin" }).format(new Date());
+
+  // Active day: remembered choice → else the real Berlin date if it's one of ours → else Thu.
+  let curDay = localStorage.getItem("wad-day");
+  if (!DAYS[curDay]) curDay = (DAYS.fri.date === todayKey()) ? "fri" : "thu";
+  let S = DAYS[curDay].S;
+  let isToday = DAYS[curDay].date === todayKey();
+
   const YT = "https://www.youtube.com/results?search_query=WeAreDevelopers+2026+";
   const tyLabel = { keynote:"Keynote", panel:"Panel", lightning:"⚡ Lightning" };
 
@@ -292,17 +320,20 @@
     if (s.sp) kick.push('<span class="pill">' + s.sp + '</span>');
     kick.push('<span class="pill play">▶</span>');
 
-    // Time-based status (Berlin tz): live if underway, soon if starting within SOON_MIN.
-    const now = nowMinBerlin(), a = toMin(s.t), b = toMin(s.e);
+    // Time-based status (Berlin tz): live/soon/past only when viewing the real current
+    // day — on any other day the clock comparison would be meaningless.
     let state = "";
-    if (now >= a && now < b) {
-      state = " live";
-      kick.unshift('<span class="pill now"><i class="dot"></i>Live now</span>');
-    } else if (a > now && a - now <= SOON_MIN) {
-      state = " soon";
-      kick.unshift('<span class="pill soon">Soon &middot; in ' + (a - now) + 'm</span>');
-    } else if (now >= b) {
-      state = " past";
+    if (isToday) {
+      const now = nowMinBerlin(), a = toMin(s.t), b = toMin(s.e);
+      if (now >= a && now < b) {
+        state = " live";
+        kick.unshift('<span class="pill now"><i class="dot"></i>Live now</span>');
+      } else if (a > now && a - now <= SOON_MIN) {
+        state = " soon";
+        kick.unshift('<span class="pill soon">Soon &middot; in ' + (a - now) + 'm</span>');
+      } else if (now >= b) {
+        state = " past";
+      }
     }
 
     const title = '<a href="' + YT + encodeURIComponent(s.title) + '" target="_blank" rel="noopener">' + s.title + '</a>';
@@ -313,6 +344,11 @@
   }
   function render(q) {
     const ol = document.getElementById("tl");
+    if (!S.length) {
+      ol.innerHTML = '<li class="empty">No picks saved for ' + DAYS[curDay].long +
+        ' yet. Send me your Day-2 sessions and they’ll appear here.</li>';
+      return;
+    }
     q = (q || "").trim().toLowerCase();
     let rows = S.slice();
     if (q) rows = rows.filter(s => (s.title + " " + s.who + " " + s.st + " " + (s.sp || "")).toLowerCase().includes(q));
@@ -329,41 +365,102 @@
     }).join('');
   }
   // Day-progress bar: you attend one session per timeslot, so progress is measured
-  // in slots (not all 33 picks — clashes mean you can't see every speaker). A slot
-  // counts as "done" once every session in it has ended (Berlin tz).
+  // in slots (not every pick — clashes mean you can't see every speaker). A slot
+  // counts as "done" once every session in it has ended (Berlin tz). Only the real
+  // current day shows live progress; other days show the plan.
   function updateProgress() {
-    const now = nowMinBerlin();
+    const fill = document.getElementById("dayprogFill");
+    const countEl = document.getElementById("dayprogCount");
+    const pctEl = document.getElementById("dayprogPct");
+    const bar = document.getElementById("dayprog");
     const ends = {};
     S.forEach(s => { ends[s.t] = Math.max(ends[s.t] || 0, toMin(s.e)); });
-    const starts = Object.keys(ends);
-    const total = starts.length;
+    const total = Object.keys(ends).length;
+
+    if (!total) {                                   // day has no picks yet
+      fill.style.width = "0%";
+      countEl.innerHTML = "No " + DAYS[curDay].tab + " picks yet";
+      pctEl.textContent = "";
+      bar.removeAttribute("aria-valuenow");
+      bar.setAttribute("aria-valuetext", "No sessions saved for " + DAYS[curDay].long);
+      return;
+    }
+    if (!isToday) {                                 // viewing a different day → show plan
+      fill.style.width = "0%";
+      countEl.innerHTML = "<b>" + total + "</b> slots planned";
+      pctEl.textContent = DAYS[curDay].tab;
+      bar.setAttribute("aria-valuemin", "0");
+      bar.setAttribute("aria-valuemax", String(total));
+      bar.setAttribute("aria-valuenow", "0");
+      bar.setAttribute("aria-valuetext", total + " timeslots planned for " + DAYS[curDay].long);
+      return;
+    }
+    const now = nowMinBerlin();
     let done = 0, live = 0;
-    starts.forEach(t => {
+    Object.keys(ends).forEach(t => {
       if (now >= ends[t]) done++;
-      else if (now >= toMin(t)) live++;      // slot underway right now
+      else if (now >= toMin(t)) live++;             // slot underway right now
     });
     const remaining = total - done;
-    const pct = total ? Math.round(done / total * 100) : 0;
-
-    document.getElementById("dayprogFill").style.width = pct + "%";
-    const pctEl = document.getElementById("dayprogPct");
+    fill.style.width = Math.round(done / total * 100) + "%";
     pctEl.textContent = done + "/" + total + " done";
-
-    let msg;
-    if (remaining === 0)      msg = "🎉 All done — day complete";
-    else if (live)            msg = "<b>" + remaining + "</b> to go · 1 on now";
-    else                      msg = "<b>" + remaining + "</b> more to see";
-    document.getElementById("dayprogCount").innerHTML = msg;
-
-    const bar = document.getElementById("dayprog");
+    countEl.innerHTML = remaining === 0 ? "🎉 All done — day complete"
+      : live ? "<b>" + remaining + "</b> to go · 1 on now"
+      : "<b>" + remaining + "</b> more to see";
     bar.setAttribute("aria-valuemin", "0");
     bar.setAttribute("aria-valuemax", String(total));
     bar.setAttribute("aria-valuenow", String(done));
     bar.setAttribute("aria-valuetext", remaining + " of " + total + " timeslots still ahead");
   }
 
+  // Masthead stats + intro, recomputed from the active day's session list.
+  function updateHeader() {
+    const d = DAYS[curDay];
+    const slots = [...new Set(S.map(s => s.t))];
+    const clashes = slots.filter(t => S.filter(s => s.t === t).length > 1).length;
+    const span = S.length
+      ? [...S].sort((a, b) => toMin(a.t) - toMin(b.t))[0].t + "–" +
+        [...S].sort((a, b) => toMin(a.e) - toMin(b.e)).slice(-1)[0].e
+      : "—";
+    document.getElementById("v-saved").textContent = S.length;
+    document.getElementById("v-slots").textContent = slots.length;
+    document.getElementById("v-clash").textContent = clashes;
+    document.getElementById("v-span").textContent = span;
+    document.getElementById("sub").innerHTML = S.length
+      ? "Your <strong>" + S.length + "</strong> saved sessions on <strong>" + d.long +
+        "</strong> at the CityCube, Berlin. Slots with more than one pick are <strong>clashes</strong> " +
+        "&mdash; one room at a time, so choose. Times in Berlin (CEST)."
+      : "No sessions saved for <strong>" + d.long + "</strong> yet. Send me your Day-2 picks and they’ll drop in here.";
+  }
+
+  // Thu/Fri switch
+  function paintDayButtons() {
+    document.querySelectorAll(".dbtn").forEach(b => {
+      const on = b.dataset.day === curDay;
+      b.setAttribute("aria-selected", on ? "true" : "false");
+      b.tabIndex = on ? 0 : -1;
+    });
+  }
+  function setActiveDay(day) {
+    if (!DAYS[day] || day === curDay) return;
+    curDay = day;
+    S = DAYS[curDay].S;
+    isToday = DAYS[curDay].date === todayKey();
+    try { localStorage.setItem("wad-day", curDay); } catch (e) {}
+    paintDayButtons();
+    updateHeader();
+    render(search.value);
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  }
+
   const search = document.querySelector(".search");
   search.addEventListener("input", () => render(search.value));
+  document.querySelectorAll(".dbtn").forEach(b =>
+    b.addEventListener("click", () => setActiveDay(b.dataset.day)));
+
+  paintDayButtons();
+  updateHeader();
   render("");
   updateProgress();
   // Re-render on a timer so "Live now"/"Soon", the countdown and the day-progress bar stay current.
@@ -395,7 +492,6 @@
     toastTimer = setTimeout(() => toastEl.classList.remove("show"), ms || 8000);
   }
 
-  const todayKey = () => new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Berlin" }).format(new Date());
   function loadNotified() {
     try { const d = JSON.parse(localStorage.getItem("wad-notified") || "{}");
       return d.date === todayKey() ? new Set(d.slots) : new Set(); } catch (e) { return new Set(); }
@@ -436,7 +532,7 @@
     if (!shown) showToast("<b>" + title + "</b><br>" + body.replace(/\n/g, "<br>"), 12000);
   }
   function checkReminders() {
-    if (!remindOn) return;
+    if (!remindOn || !isToday) return;   // only remind for the day actually happening
     const now = nowMinBerlin();
     const map = slotsByStart();
     Object.keys(map).forEach(t => {
