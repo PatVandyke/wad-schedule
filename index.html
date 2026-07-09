@@ -124,6 +124,19 @@
   .card.soon { border-color: var(--warn); box-shadow: var(--shadow), inset 3px 0 0 var(--warn); }
   .card.past { opacity: .5; }
   .card.past:hover { opacity: .8; }
+
+  /* Clash slots: cards laid out horizontally in a scroll-snap rail. The card you
+     scroll to is remembered per slot (survives refresh) = your pick for that slot. */
+  .rail { position: relative; display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding: 3px 2px 10px; margin: 0 -2px;
+    scrollbar-width: thin; scrollbar-color: var(--line) transparent;
+    -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+  .rail > .card { flex: 0 0 82%; scroll-snap-align: start; }
+  .rail::-webkit-scrollbar { height: 6px; }
+  .rail::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+  .rail::-webkit-scrollbar-track { background: transparent; }
+  .card.chosen { outline: 2px solid var(--accent); outline-offset: -3px; }
+  .card.chosen.past { opacity: 1; }
   .title { font-size: 15px; font-weight: 700; margin: 0; letter-spacing: -.01em;
     line-height: 1.3; text-wrap: pretty; }
   .title a { color: inherit; text-decoration: none; }
@@ -170,6 +183,7 @@
     .time .end::before { content: "\2192\00a0"; }   /* → before end time */
 
     .stack { gap: 11px; }
+    .rail > .card { flex-basis: 88%; }
     .card { padding: 14px 15px; border-radius: 13px; }
     .card.feat { box-shadow: var(--shadow), inset 4px 0 0 var(--accent); }
     .kicker { gap: 6px; margin-bottom: 8px; }
@@ -342,6 +356,45 @@
       '<p class="title">' + title + '</p>' +
       (s.who ? '<p class="who">' + s.who + '</p>' : '') + '</div>';
   }
+  // --- Clash rails: remember which card you scrolled to, per slot, across refreshes ---
+  const PICK_KEY = "wad-pick";
+  function loadPicks() { try { return JSON.parse(localStorage.getItem(PICK_KEY) || "{}"); } catch (e) { return {}; } }
+  function savePick(slot, idx) {
+    const p = loadPicks(); p[slot] = idx;
+    try { localStorage.setItem(PICK_KEY, JSON.stringify(p)); } catch (e) {}
+  }
+  function railIndex(rail) {                       // card whose left edge is nearest the scroll offset
+    const cards = [...rail.children];
+    let best = 0, bestD = Infinity;
+    cards.forEach((c, i) => {
+      const d = Math.abs(c.offsetLeft - rail.scrollLeft);
+      if (d < bestD) { bestD = d; best = i; }
+    });
+    return best;
+  }
+  function markChosen(rail, idx) {
+    [...rail.children].forEach((c, i) => c.classList.toggle("chosen", i === idx));
+  }
+  function wireRails() {
+    const picks = loadPicks();
+    document.querySelectorAll(".rail").forEach(rail => {
+      const slot = rail.dataset.slot;
+      let idx = Number.isInteger(picks[slot]) ? picks[slot] : 0;
+      if (idx > rail.children.length - 1) idx = 0;
+      const target = rail.children[idx];
+      if (target) rail.scrollLeft = target.offsetLeft;   // instant restore (no animation)
+      markChosen(rail, idx);
+      rail.addEventListener("scroll", () => {
+        clearTimeout(rail._pt);
+        rail._pt = setTimeout(() => {
+          const i = railIndex(rail);
+          markChosen(rail, i);
+          savePick(slot, i);
+        }, 120);
+      }, { passive: true });
+    });
+  }
+
   function render(q) {
     const ol = document.getElementById("tl");
     if (!S.length) {
@@ -357,12 +410,20 @@
     ol.innerHTML = times.map(t => {
       const slot = rows.filter(s => s.t === t).sort((a, b) => stageRank(a.st) - stageRank(b.st));
       const clash = slot.length > 1;
-      const bar = clash ? '<div class="clashbar">&#9888; ' + slot.length + ' clash &mdash; choose one</div>' : '';
+      const cards = slot.map(cardHTML).join('');
+      // Clash → horizontal scroll-snap rail (data-slot keys the remembered pick).
+      const bar = clash
+        ? '<div class="clashbar">&#9888; ' + slot.length + ' clash &mdash; swipe &rarr; to pick</div>'
+        : '';
+      const body = clash
+        ? '<div class="rail" data-slot="' + curDay + '|' + t + '">' + cards + '</div>'
+        : cards;
       return '<li class="slot" data-s="' + toMin(t) + '">' +
         '<div class="time">' + t + '<span class="end">' + slot[0].e + '</span></div>' +
-        '<div class="stack' + (clash ? ' clash' : '') + '">' + bar + slot.map(cardHTML).join('') + '</div>' +
+        '<div class="stack' + (clash ? ' clash' : '') + '">' + bar + body + '</div>' +
         '</li>';
     }).join('');
+    wireRails();
   }
   // Day-progress bar: you attend one session per timeslot, so progress is measured
   // in slots (not every pick — clashes mean you can't see every speaker). A slot
