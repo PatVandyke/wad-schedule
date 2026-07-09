@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>My WeAreDevelopers 2026 Schedule</title>
 <style>
   :root {
@@ -136,7 +136,7 @@
   .rail::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
   .rail::-webkit-scrollbar-track { background: transparent; }
   .card.chosen { outline: 2px solid var(--accent); outline-offset: -3px; }
-  .card.chosen.past { opacity: 1; }
+  /* Passed sessions stay greyed even when they're the selected card in a rail. */
   .title { font-size: 15px; font-weight: 700; margin: 0; letter-spacing: -.01em;
     line-height: 1.3; text-wrap: pretty; }
   .title a { color: inherit; text-decoration: none; }
@@ -193,6 +193,29 @@
     .title, .who { overflow-wrap: anywhere; }
     .fab-next { right: 12px; bottom: 12px; padding: 11px 15px; font-size: 13px; }
     .fab-bell { right: 12px; bottom: 58px; padding: 11px 15px; font-size: 13px; }
+  }
+
+  /* Samsung Galaxy S22 (360px CSS width, gesture nav, Chrome) — tuned for the device
+     the schedule is actually used on: thumb-sized targets, one card per swipe with a
+     peek, progress bar that never overflows, and FABs clear of the gesture bar. */
+  @media (max-width: 412px) {
+    .dayprog { gap: 8px; padding: 0 12px; font-size: 10.5px;
+      padding-top: env(safe-area-inset-top, 0px); height: calc(34px + env(safe-area-inset-top, 0px)); }
+    .dayprog .pct { font-size: 10px; }
+    .dayprog .count { flex: 0 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    body { padding-top: calc(34px + env(safe-area-inset-top, 0px)); }
+    .controls { top: calc(34px + env(safe-area-inset-top, 0px)); }
+
+    .dbtn { padding: 10px 20px; font-size: 13px; }        /* ≥44px tall tap target */
+    .rail { gap: 9px; scroll-padding-left: 12px; }
+    .rail > .card { flex-basis: 90%; }                    /* one card + small peek */
+    .card.chosen { outline-width: 2.5px; }                /* clearer pick on small screen */
+
+    /* keep the floating buttons above the Android gesture bar */
+    .fab-next { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+    .fab-bell { right: 12px; bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
+    .toast { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+    .wrap { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
   }
 </style>
 
@@ -465,7 +488,7 @@
     const remaining = total - done;
     fill.style.width = Math.round(done / total * 100) + "%";
     pctEl.textContent = done + "/" + total + " done";
-    countEl.innerHTML = remaining === 0 ? "🎉 All done — day complete"
+    countEl.innerHTML = remaining === 0 ? "🎉 Day complete"
       : live ? "<b>" + remaining + "</b> to go · 1 on now"
       : "<b>" + remaining + "</b> more to see";
     bar.setAttribute("aria-valuemin", "0");
