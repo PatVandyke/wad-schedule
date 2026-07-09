@@ -1,0 +1,242 @@
+<meta charset="utf-8">
+<title>My WeAreDevelopers 2026 Schedule</title>
+<style>
+  :root {
+    --paper: #F6F3EE; --card: #FFFFFF; --ink: #17161A; --meta: #6B6B78;
+    --line: #DED8CF; --accent: #FF5A46; --accent-soft: #FFE7E2;
+    --warn: #C7621C; --warn-soft: #FBE7D3;
+    --board: #24222A; --board-ink: #F3EFE8;
+    --shadow: 0 1px 2px rgba(23,22,26,.05), 0 4px 14px rgba(23,22,26,.04);
+    --mono: ui-monospace, "SF Mono", "SFMono-Regular", "Cascadia Mono", "Roboto Mono", Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #141317; --card: #1D1C22; --ink: #EDEAE4; --meta: #9B98A5;
+      --line: #2E2C36; --accent: #FF6B58; --accent-soft: #3A2320;
+      --warn: #E8944D; --warn-soft: #3A2A18;
+      --board: #0F0E12; --board-ink: #EDEAE4;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.32);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #141317; --card: #1D1C22; --ink: #EDEAE4; --meta: #9B98A5;
+    --line: #2E2C36; --accent: #FF6B58; --accent-soft: #3A2320;
+    --warn: #E8944D; --warn-soft: #3A2A18; --board: #0F0E12; --board-ink: #EDEAE4;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.32);
+  }
+  :root[data-theme="light"] {
+    --paper: #F6F3EE; --card: #FFFFFF; --ink: #17161A; --meta: #6B6B78;
+    --line: #DED8CF; --accent: #FF5A46; --accent-soft: #FFE7E2;
+    --warn: #C7621C; --warn-soft: #FBE7D3; --board: #24222A; --board-ink: #F3EFE8;
+    --shadow: 0 1px 2px rgba(23,22,26,.05), 0 4px 14px rgba(23,22,26,.04);
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 0 20px 96px; }
+
+  header.masthead { border-bottom: 2px solid var(--ink); padding: 40px 0 22px; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+  h1 { font-size: clamp(30px, 5.4vw, 50px); line-height: 1.02; margin: 0;
+    font-weight: 800; letter-spacing: -.02em; text-wrap: balance; }
+  .sub { margin: 16px 0 0; color: var(--meta); font-size: 15px; max-width: 62ch; }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 0; margin: 22px 0 0;
+    border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--card); }
+  .stat { flex: 1 1 120px; padding: 13px 16px; border-right: 1px solid var(--line); }
+  .stat:last-child { border-right: 0; }
+  .stat .v { font-size: 22px; font-weight: 800; letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums; }
+  .stat .v.warn { color: var(--warn); }
+  .stat .l { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--meta); margin-top: 3px; }
+
+  .controls { position: sticky; top: 0; z-index: 20; background: var(--paper);
+    padding: 18px 0 12px; margin-bottom: 8px; display: flex; gap: 12px; align-items: center;
+    border-bottom: 1px solid var(--line); }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-family: var(--mono);
+    font-size: 11.5px; color: var(--meta); align-items: center; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 9px; height: 9px; border-radius: 50%; }
+  .swatch.clash { background: var(--warn); }
+  .swatch.solo { background: var(--card); border: 2px solid var(--line); }
+  .search { margin-left: auto; flex: 1 1 180px; min-width: 140px; max-width: 260px;
+    font-family: var(--mono); font-size: 13px; padding: 9px 12px; background: var(--card);
+    color: var(--ink); border: 1px solid var(--line); border-radius: 8px; }
+  .search::placeholder { color: var(--meta); }
+  .search:focus-visible, .toggle:focus-visible, .title a:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+  ol.tl { list-style: none; margin: 8px 0 0; padding: 0; position: relative; }
+  ol.tl::before { content: ""; position: absolute; left: 68px; top: 10px; bottom: 10px;
+    width: 1px; background: var(--line); }
+  @media (max-width: 640px) { ol.tl::before { display: none; } }
+
+  li.slot { position: relative; display: grid; grid-template-columns: 58px 1fr; gap: 22px;
+    padding: 6px 0 24px; }
+  .time { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 14px;
+    text-align: right; padding-top: 2px; color: var(--ink); letter-spacing: -.02em; font-weight: 600; }
+  .time .end { display: block; color: var(--meta); font-size: 11px; margin-top: 3px; font-weight: 400; }
+
+  .stack { position: relative; display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+  .stack::before { content: ""; position: absolute; left: -15px; top: 5px; width: 9px; height: 9px;
+    border-radius: 50%; background: var(--card); border: 2px solid var(--line); }
+  .stack.clash::before { background: var(--warn); border-color: var(--warn); }
+  @media (max-width: 640px) { .stack::before { display: none; } }
+
+  .clashbar { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--warn); background: var(--warn-soft); border-radius: 6px; padding: 3px 9px; margin-bottom: 1px; }
+
+  .card { position: relative; background: var(--card); border: 1px solid var(--line);
+    border-radius: 11px; padding: 12px 15px; box-shadow: var(--shadow); }
+  .card.feat { border-color: var(--accent); box-shadow: var(--shadow), inset 3px 0 0 var(--accent); }
+  .kicker { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; margin-bottom: 6px; }
+  .pill { font-family: var(--mono); font-size: 10px; letter-spacing: .07em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 5px; background: var(--paper); color: var(--meta);
+    border: 1px solid var(--line); white-space: nowrap; }
+  .pill.stage { color: var(--ink); font-weight: 600; }
+  .pill.k { background: var(--accent-soft); color: var(--accent); border-color: transparent; font-weight: 700; }
+  .pill.panel { border-style: dashed; }
+  .pill.play { color: var(--accent); }
+  .title { font-size: 15px; font-weight: 700; margin: 0; letter-spacing: -.01em;
+    line-height: 1.3; text-wrap: pretty; }
+  .title a { color: inherit; text-decoration: none; }
+  .title a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 2px; }
+  .who { margin: 5px 0 0; font-size: 13px; color: var(--meta); }
+  .who b { color: var(--ink); font-weight: 600; }
+
+  .empty { color: var(--meta); font-family: var(--mono); font-size: 13px; padding: 30px 0; }
+  footer { margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--line);
+    font-size: 12.5px; color: var(--meta); max-width: 78ch; }
+  .toggle { position: fixed; right: 16px; bottom: 16px; z-index: 40; font-family: var(--mono);
+    font-size: 12px; letter-spacing: .04em; padding: 9px 13px; border-radius: 999px; cursor: pointer;
+    background: var(--board); color: var(--board-ink); border: 1px solid var(--board); box-shadow: var(--shadow); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">My picks &middot; Day 1</p>
+    <h1>My WeAreDevelopers 2026 Schedule</h1>
+    <p class="sub">Your 27 saved sessions, all on <strong>Thursday 9 July</strong> at the CityCube, Berlin. Slots with more than one pick are <strong>clashes</strong> &mdash; you can only be in one room, so choose. Times in Berlin (CEST).</p>
+    <div class="stats">
+      <div class="stat"><div class="v">27</div><div class="l">Saved sessions</div></div>
+      <div class="stat"><div class="v">10</div><div class="l">Time slots</div></div>
+      <div class="stat"><div class="v warn">6</div><div class="l">Clashing slots</div></div>
+      <div class="stat"><div class="v">10:10&ndash;18:00</div><div class="l">First &rarr; last</div></div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="legend">
+      <span><i class="swatch clash"></i>clash &mdash; choose one</span>
+      <span><i class="swatch solo"></i>no clash</span>
+    </div>
+    <input class="search" type="search" placeholder="filter picks&hellip;" aria-label="Filter sessions">
+  </div>
+
+  <ol class="tl" id="tl"></ol>
+
+  <footer>
+    Built from your saved-session list (27 IDs) cross-referenced with the full catalog. &#9654; links to a recording search. Every pick is on Day 1 &mdash; nothing saved for the pre-day or Day 2. Want me to auto-resolve clashes into one recommended track, add walking gaps between rooms, or export this as a calendar (.ics)? Say the word.
+  </footer>
+</div>
+
+<button class="toggle" id="themeToggle" aria-label="Toggle light or dark theme">&#9680; Theme</button>
+
+<script>
+  // Your 27 saved sessions, resolved against the catalog. t/e = Berlin (CEST).
+  const S = [
+    {id:588,t:"10:10",e:"10:40",st:"Mainstage",title:"The AI-Native Engineering Org: What’s Real, What’s Hype, What’s Next",who:"<b>Taroon Mandhana</b> · CTO AI & Teamwork, Atlassian",ty:"keynote",feat:1},
+    {id:590,t:"10:10",e:"10:40",st:"Stage 2",title:"You Will Migrate Eventually: A Developer Approach to Tech Adoption",who:"<b>Luisa Rink</b> & <b>Wouter Ligtenberg</b> · ING",ty:"talk"},
+    {id:593,t:"10:10",e:"10:40",st:"Stage 5",title:"Goodbye Microservices, Hello Self-Contained Systems",who:"<b>Simon Martinelli</b>",ty:"talk"},
+    {id:594,t:"10:10",e:"10:40",st:"Stage 6",sp:"Microsoft",title:"Ship Smarter Agents, Not Bigger Prompts",who:"<b>April Yoho</b> · GitHub",ty:"talk"},
+    {id:597,t:"10:10",e:"10:40",st:"Stage 9",title:"Let’s Talk Quality!",who:"<b>Lilia Gargouri</b> · German Testing Board",ty:"talk"},
+    {id:599,t:"10:10",e:"10:40",st:"Stage 11",title:"What’s New in Web? 2026 Edition",who:"<b>Christian Liebel</b> · Thinktecture (W3C TAG)",ty:"talk"},
+    {id:600,t:"10:10",e:"10:40",st:"Stage 12",title:"7 Ways to Fail at Building a Platform",who:"<b>Michael Coté</b> · Tanzu",ty:"talk"},
+    {id:602,t:"10:10",e:"10:40",st:"Airstream 1",title:"Open Source Software Licenses — A Short Guide for Developers",who:"<b>Björn Stahl</b> · Bechtle / AVS",ty:"talk"},
+    {id:603,t:"10:10",e:"10:20",st:"Airstream 2",title:"Designing UX for SRE Agents in High-Stakes Incidents",who:"<b>Osmar Matos</b> · Hyground",ty:"lightning"},
+
+    {id:605,t:"10:25",e:"10:35",st:"Airstream 2",title:"One Color to Rule Them All: Relative CSS Colors in Practice",who:"<b>Mert Akça</b> · SAP",ty:"lightning"},
+
+    {id:695,t:"13:30",e:"14:00",st:"Stage 11",title:"Generative UIs and AI Assistants for Your Angular Applications",who:"<b>Manfred Steyer</b> · ANGULARarchitects.io",ty:"talk"},
+    {id:697,t:"13:30",e:"14:00",st:"Stage 13",title:"Beyond Authentication: An Open-Source Trust Model for the Agentic Web",who:"<b>Alexander Günsche</b> (AWS) & <b>Sabrina Engling</b> (Trusted Shops)",ty:"talk"},
+
+    {id:720,t:"14:15",e:"14:20",st:"Airstream 1",title:"Beyond LLM Agents: A World Model for Visual Software Testing",who:"<b>Manuel Weichselbaum</b> · anyconcept",ty:"lightning"},
+
+    {id:658,t:"14:50",e:"15:20",st:"Stage 1",title:"Speed Up Your CI/CD Pipelines by Caching Build & Runtime Artifacts",who:"<b>Thijs Feryn</b> · Varnish Software",ty:"talk"},
+
+    {id:739,t:"14:55",e:"15:00",st:"Airstream 1",title:"Your AI Ships Code Faster Than Anyone Can Review It",who:"<b>Rasmus Klärck</b> · Oplane",ty:"lightning"},
+
+    {id:745,t:"15:30",e:"16:00",st:"Stage 3",sp:"AWS",title:"Designing High Quality Software with AI",who:"<b>Brian Lovin</b> · Notion",ty:"talk"},
+    {id:748,t:"15:30",e:"16:00",st:"Stage 6",sp:"Microsoft",title:"Is It Still C#? Practical Systems Programming with .NET",who:"<b>Szymon Kulec</b> · RavenDB",ty:"talk"},
+
+    {id:755,t:"16:10",e:"16:40",st:"Stage 5",title:"Engineering Culture in the Age of Intelligent, Real-Time Systems",who:"<b>Manuela Locarno Ajayi</b> · SVP Engineering, TomTom",ty:"talk"},
+    {id:773,t:"16:10",e:"16:40",st:"Stage 6",sp:"Microsoft",title:"Practical Tips for Keeping Your C# Code Base Clean",who:"<b>Dennis Doomen</b> · Aviva Solutions",ty:"talk"},
+    {id:776,t:"16:10",e:"16:40",st:"Stage 9",title:"Cutting LLM Costs Without Cutting Quality",who:"<b>Viktoria Semaan</b> · Databricks",ty:"talk"},
+    {id:777,t:"16:10",e:"16:40",st:"Stage 10",sp:"TikTok",title:"Keeping Applications Secure by Evolving OAuth 2.0 and OpenID Connect",who:"<b>Alexander Schwartz</b> · IBM (Keycloak)",ty:"talk"},
+
+    {id:783,t:"16:50",e:"17:20",st:"Mainstage",title:"Shipping with Confidence: Observability and Quality at Scale",who:"Panel · Novakovic (Dash0) · Kohli (Sauce Labs) · Gebler (Picnic)",ty:"panel",feat:1},
+    {id:785,t:"16:50",e:"17:20",st:"Stage 2",title:"The Migration Cookbook",who:"<b>Robert Lehmann</b> · Google (SRE)",ty:"talk"},
+    {id:789,t:"16:50",e:"17:20",st:"Stage 6",sp:"Microsoft",title:"Code That Writes Code — .NET Source Generators",who:"<b>Glenn F. Henriksen</b> · Justify",ty:"talk"},
+
+    {id:799,t:"17:30",e:"18:00",st:"Mainstage",title:"After the Framework Wars: What’s Next for Web Development",who:"Panel · Harbaugh (LaunchDarkly) · Webster (React Fdn) · Savkin (Nx)",ty:"panel",feat:1},
+    {id:805,t:"17:30",e:"18:00",st:"Stage 6",sp:"Microsoft",title:"“.NET Is Too Slow” Was Not an Option",who:"<b>Tomasz Woźnica</b> · mBank",ty:"talk"},
+    {id:809,t:"17:30",e:"18:00",st:"Stage 10",sp:"TikTok",title:"Post-Quantum Cryptography: Preparing for Q-Day",who:"<b>Tim Schade</b> · GFT Technologies",ty:"talk"}
+  ];
+
+  const YT = "https://www.youtube.com/results?search_query=WeAreDevelopers+2026+";
+  const tyLabel = { keynote:"Keynote", panel:"Panel", lightning:"⚡ Lightning" };
+
+  function stageRank(st) {
+    if (st === "Mainstage") return -1;
+    const m = st.match(/^Stage (\d+)/);
+    if (m) return +m[1];
+    if (st === "Tech Leaders") return 90;
+    if (st.startsWith("Airstream")) return 90 + (+st.slice(-1) || 0);
+    return 50;
+  }
+  function cardHTML(s) {
+    const kick = [];
+    if (tyLabel[s.ty]) kick.push('<span class="pill ' + (s.ty === 'keynote' ? 'k' : s.ty) + '">' + tyLabel[s.ty] + '</span>');
+    kick.push('<span class="pill stage">' + s.st + '</span>');
+    if (s.sp) kick.push('<span class="pill">' + s.sp + '</span>');
+    kick.push('<span class="pill play">▶</span>');
+    const title = '<a href="' + YT + encodeURIComponent(s.title) + '" target="_blank" rel="noopener">' + s.title + '</a>';
+    return '<div class="card' + (s.feat ? ' feat' : '') + '">' +
+      '<div class="kicker">' + kick.join('') + '</div>' +
+      '<p class="title">' + title + '</p>' +
+      (s.who ? '<p class="who">' + s.who + '</p>' : '') + '</div>';
+  }
+  function render(q) {
+    const ol = document.getElementById("tl");
+    q = (q || "").trim().toLowerCase();
+    let rows = S.slice();
+    if (q) rows = rows.filter(s => (s.title + " " + s.who + " " + s.st + " " + (s.sp || "")).toLowerCase().includes(q));
+    if (!rows.length) { ol.innerHTML = '<li class="empty">No picks match &ldquo;' + q + '&rdquo;.</li>'; return; }
+    const times = [...new Set(rows.map(s => s.t))].sort();
+    ol.innerHTML = times.map(t => {
+      const slot = rows.filter(s => s.t === t).sort((a, b) => stageRank(a.st) - stageRank(b.st));
+      const clash = slot.length > 1;
+      const bar = clash ? '<div class="clashbar">&#9888; ' + slot.length + ' clash &mdash; choose one</div>' : '';
+      return '<li class="slot">' +
+        '<div class="time">' + t + '<span class="end">' + slot[0].e + '</span></div>' +
+        '<div class="stack' + (clash ? ' clash' : '') + '">' + bar + slot.map(cardHTML).join('') + '</div>' +
+        '</li>';
+    }).join('');
+  }
+  const search = document.querySelector(".search");
+  search.addEventListener("input", () => render(search.value));
+  render("");
+
+  const root = document.documentElement;
+  document.getElementById("themeToggle").addEventListener("click", () => {
+    const dark = root.dataset.theme ? root.dataset.theme === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+  });
+</script>
