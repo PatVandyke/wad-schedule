@@ -274,7 +274,7 @@
   <ol class="tl" id="tl"></ol>
 
   <footer>
-    Built from your saved-session list cross-referenced with the full catalog. &#9654; links to a recording search. Use the <strong>Thu / Fri</strong> switch above to flip between days &mdash; your choice is remembered, and the page opens on whichever day is live. <strong>Friday is empty until you send me your Day-2 picks.</strong> Want me to auto-resolve clashes into one recommended track, add walking gaps between rooms, or export this as a calendar (.ics)? Say the word.
+    Built from your WeAreDevelopers bookmarks (both days). &#9654; links to a recording search. Use the <strong>Thu / Fri</strong> switch above to flip between days &mdash; your choice is remembered, and the page opens on whichever day is live. Want me to auto-resolve clashes into one recommended track, add walking gaps between rooms, or export this as a calendar (.ics)? Say the word.
   </footer>
 </div>
 
@@ -285,55 +285,81 @@
 <script>
   // Your saved sessions, resolved against the catalog. t/e = Berlin (CEST).
   const THU = [
-    {id:588,t:"10:10",e:"10:40",st:"Mainstage",title:"The AI-Native Engineering Org: What’s Real, What’s Hype, What’s Next",who:"<b>Taroon Mandhana</b> · CTO AI & Teamwork, Atlassian",ty:"keynote",feat:1},
-    {id:590,t:"10:10",e:"10:40",st:"Stage 2",title:"You Will Migrate Eventually: A Developer Approach to Tech Adoption",who:"<b>Luisa Rink</b> & <b>Wouter Ligtenberg</b> · ING",ty:"talk"},
-    {id:593,t:"10:10",e:"10:40",st:"Stage 5",title:"Goodbye Microservices, Hello Self-Contained Systems",who:"<b>Simon Martinelli</b>",ty:"talk"},
-    {id:594,t:"10:10",e:"10:40",st:"Stage 6",sp:"Microsoft",title:"Ship Smarter Agents, Not Bigger Prompts",who:"<b>April Yoho</b> · GitHub",ty:"talk"},
-    {id:597,t:"10:10",e:"10:40",st:"Stage 9",title:"Let’s Talk Quality!",who:"<b>Lilia Gargouri</b> · German Testing Board",ty:"talk"},
-    {id:599,t:"10:10",e:"10:40",st:"Stage 11",title:"What’s New in Web? 2026 Edition",who:"<b>Christian Liebel</b> · Thinktecture (W3C TAG)",ty:"talk"},
-    {id:600,t:"10:10",e:"10:40",st:"Stage 12",title:"7 Ways to Fail at Building a Platform",who:"<b>Michael Coté</b> · Tanzu",ty:"talk"},
-    {id:602,t:"10:10",e:"10:40",st:"Airstream 1",title:"Open Source Software Licenses — A Short Guide for Developers",who:"<b>Björn Stahl</b> · Bechtle / AVS",ty:"talk"},
-    {id:603,t:"10:10",e:"10:20",st:"Airstream 2",title:"Designing UX for SRE Agents in High-Stakes Incidents",who:"<b>Osmar Matos</b> · Hyground",ty:"lightning"},
-
-    {id:605,t:"10:25",e:"10:35",st:"Airstream 2",title:"One Color to Rule Them All: Relative CSS Colors in Practice",who:"<b>Mert Akça</b> · SAP",ty:"lightning"},
-
-    {id:620,t:"11:30",e:"12:00",st:"Stage 1",title:"The Retrieval Layer for Edge AI",who:"<b>Sasha Denisov</b> & <b>Chadha Sridi</b>",ty:"talk"},
-    {id:621,t:"11:30",e:"12:00",st:"Stage 2",title:"Agentic AI: Building Autonomous Systems for Developers",who:"<b>Anshul Jindal</b> & <b>Sebastian Mahr</b>",ty:"talk"},
-    {id:622,t:"11:30",e:"12:00",st:"Stage 4",title:"The New Org Chart: When AI Joins the Workforce",who:"Panel · <b>Avani Prabhakar</b> · <b>Benjamin Mann</b> · <b>Nils Berger</b> · <b>Damiana Casile</b>",ty:"panel"},
-
-    {id:623,t:"12:10",e:"12:40",st:"Mainstage",title:"The Signal Layer: What to Build When Anything Can Be Built",who:"<b>Lena Hall</b>",ty:"talk",feat:1},
-    {id:624,t:"12:10",e:"12:20",st:"Airstream 1",title:"Code Style in Practice: Balancing Preferences and Consistency",who:"<b>Angelika Shvets</b>",ty:"lightning"},
-
-    {id:625,t:"12:50",e:"13:20",st:"Stage 2",title:"200 OK: Payment Settled, Resource Delivered",who:"<b>Brian Whippo</b>",ty:"talk"},
-
-    {id:695,t:"13:30",e:"14:00",st:"Stage 11",title:"Generative UIs and AI Assistants for Your Angular Applications",who:"<b>Manfred Steyer</b> · ANGULARarchitects.io",ty:"talk"},
-    {id:697,t:"13:30",e:"14:00",st:"Stage 13",title:"Beyond Authentication: An Open-Source Trust Model for the Agentic Web",who:"<b>Alexander Günsche</b> (AWS) & <b>Sabrina Engling</b> (Trusted Shops)",ty:"talk"},
-
-    {id:720,t:"14:15",e:"14:20",st:"Airstream 1",title:"Beyond LLM Agents: A World Model for Visual Software Testing",who:"<b>Manuel Weichselbaum</b> · anyconcept",ty:"lightning"},
-
-    {id:658,t:"14:50",e:"15:20",st:"Stage 1",title:"Speed Up Your CI/CD Pipelines by Caching Build & Runtime Artifacts",who:"<b>Thijs Feryn</b> · Varnish Software",ty:"talk"},
-
-    {id:739,t:"14:55",e:"15:00",st:"Airstream 1",title:"Your AI Ships Code Faster Than Anyone Can Review It",who:"<b>Rasmus Klärck</b> · Oplane",ty:"lightning"},
-
-    {id:745,t:"15:30",e:"16:00",st:"Stage 3",sp:"AWS",title:"Designing High Quality Software with AI",who:"<b>Brian Lovin</b> · Notion",ty:"talk"},
-    {id:748,t:"15:30",e:"16:00",st:"Stage 6",sp:"Microsoft",title:"Is It Still C#? Practical Systems Programming with .NET",who:"<b>Szymon Kulec</b> · RavenDB",ty:"talk"},
-
-    {id:755,t:"16:10",e:"16:40",st:"Stage 5",title:"Engineering Culture in the Age of Intelligent, Real-Time Systems",who:"<b>Manuela Locarno Ajayi</b> · SVP Engineering, TomTom",ty:"talk"},
-    {id:773,t:"16:10",e:"16:40",st:"Stage 6",sp:"Microsoft",title:"Practical Tips for Keeping Your C# Code Base Clean",who:"<b>Dennis Doomen</b> · Aviva Solutions",ty:"talk"},
-    {id:776,t:"16:10",e:"16:40",st:"Stage 9",title:"Cutting LLM Costs Without Cutting Quality",who:"<b>Viktoria Semaan</b> · Databricks",ty:"talk"},
-    {id:777,t:"16:10",e:"16:40",st:"Stage 10",sp:"TikTok",title:"Keeping Applications Secure by Evolving OAuth 2.0 and OpenID Connect",who:"<b>Alexander Schwartz</b> · IBM (Keycloak)",ty:"talk"},
-
-    {id:783,t:"16:50",e:"17:20",st:"Mainstage",title:"Shipping with Confidence: Observability and Quality at Scale",who:"Panel · Novakovic (Dash0) · Kohli (Sauce Labs) · Gebler (Picnic)",ty:"panel",feat:1},
-    {id:785,t:"16:50",e:"17:20",st:"Stage 2",title:"The Migration Cookbook",who:"<b>Robert Lehmann</b> · Google (SRE)",ty:"talk"},
-    {id:789,t:"16:50",e:"17:20",st:"Stage 6",sp:"Microsoft",title:"Code That Writes Code — .NET Source Generators",who:"<b>Glenn F. Henriksen</b> · Justify",ty:"talk"},
-
-    {id:799,t:"17:30",e:"18:00",st:"Mainstage",title:"After the Framework Wars: What’s Next for Web Development",who:"Panel · Harbaugh (LaunchDarkly) · Webster (React Fdn) · Savkin (Nx)",ty:"panel",feat:1},
-    {id:805,t:"17:30",e:"18:00",st:"Stage 6",sp:"Microsoft",title:"“.NET Is Too Slow” Was Not an Option",who:"<b>Tomasz Woźnica</b> · mBank",ty:"talk"},
-    {id:809,t:"17:30",e:"18:00",st:"Stage 10",sp:"TikTok",title:"Post-Quantum Cryptography: Preparing for Q-Day",who:"<b>Tim Schade</b> · GFT Technologies",ty:"talk"}
+    {"id": 602, "t": "10:10", "e": "10:40", "st": "Airstream 1", "title": "Open Source Software Licenses - A short Guide for Software Developers", "who": "<b>Björn Stahl</b> · Bechtle / AVS", "ty": "talk"},
+    {"id": 603, "t": "10:10", "e": "10:20", "st": "Airstream 2", "title": "Designing UX for SRE Agents in High-Stakes Incidents", "who": "<b>Osmar Matos</b> · Hyground", "ty": "lightning"},
+    {"id": 588, "t": "10:10", "e": "10:40", "st": "Mainstage", "title": "The AI-Native Engineering Org: What’s Real, What’s Hype, What’s Next", "who": "Panel · <b>Taroon Mandhana</b> (Atlassian) · <b>Sebastian Kister</b> (Volkswagen Group)", "ty": "panel"},
+    {"id": 599, "t": "10:10", "e": "10:40", "st": "Stage 11", "title": "What’s New in Web? 2026 Edition", "who": "<b>Christian Liebel</b> · Thinktecture", "ty": "talk"},
+    {"id": 600, "t": "10:10", "e": "10:40", "st": "Stage 12", "title": "7 Ways to Fail at Building a Platform", "who": "<b>Michael Coté</b> · Tanzu", "ty": "talk"},
+    {"id": 590, "t": "10:10", "e": "10:40", "st": "Stage 2", "title": "You Will Migrate Eventually: A developer approach to technology adoption", "who": "<b>Luisa Rink</b> & <b>Wouter Ligtenberg</b> · ING", "ty": "talk"},
+    {"id": 593, "t": "10:10", "e": "10:40", "st": "Stage 5", "title": "Goodbye Microservices, Hello Self-Contained Systems", "who": "<b>Simon Martinelli</b> · Martinelli", "ty": "talk"},
+    {"id": 594, "t": "10:10", "e": "10:40", "st": "Stage 6", "sp": "Microsoft", "title": "Ship Smarter Agents, Not Bigger Prompts", "who": "<b>April Yoho</b> · GitHub", "ty": "talk"},
+    {"id": 597, "t": "10:10", "e": "10:40", "st": "Stage 9", "title": "Let’s Talk Quality!", "who": "<b>Lilia Gargouri</b> · German Testing Board", "ty": "talk"},
+    {"id": 605, "t": "10:25", "e": "10:35", "st": "Airstream 2", "title": "One Color to Rule Them All: Relative CSS Colors in Practice", "who": "<b>Mert Akça</b> · SAP", "ty": "lightning"},
+    {"id": 629, "t": "10:50", "e": "11:20", "st": "Stage 12", "title": "From DevOps to Scaled DevOps: How We’re Rebuilding Continuous Delivery as a Platform", "who": "<b>Dominik Krichbaum</b> · ING", "ty": "talk"},
+    {"id": 620, "t": "10:50", "e": "11:20", "st": "Stage 3", "sp": "AWS", "title": "You don't need to write the code. You need to become a verification architect and prove it's correct", "who": "<b>Guillaume Moigneu</b> · Upsun", "ty": "talk"},
+    {"id": 622, "t": "10:50", "e": "11:20", "st": "Stage 5", "title": "The Velocity Tax: The Hidden Cost of Unintentional Feature Alignment", "who": "<b>Tushar Gupta</b> · Schwarz Digits", "ty": "talk"},
+    {"id": 635, "t": "11:30", "e": "12:00", "st": "Stage 1", "title": "The Retrieval Layer for Edge AI", "who": "<b>Sasha Denisov</b> (Brainform.ai) · <b>Chadha Sridi</b> (Qdrant)", "ty": "talk"},
+    {"id": 636, "t": "11:30", "e": "12:00", "st": "Stage 2", "title": "Agentic AI: building autonomous systems for developers", "who": "<b>Anshul Jindal</b> (NVIDIA) · <b>Sebastian Mahr</b> (SAP)", "ty": "talk"},
+    {"id": 638, "t": "11:30", "e": "12:00", "st": "Stage 4", "title": "The New Org Chart: When AI Joins the Workforce", "who": "Panel · <b>Avani Prabhakar</b> (Atlassian) · <b>Benjamin Mann</b> (Delivery Hero) · <b>Nils Berger</b> (Viewpointsystem) · <b>Damiana Casile</b> (Dow Jones)", "ty": "panel"},
+    {"id": 660, "t": "12:10", "e": "12:20", "st": "Airstream 1", "title": "Code Style in Practice: Balancing Preferences and Consistency", "who": "<b>Angelika Shvets</b> · Global-e", "ty": "lightning"},
+    {"id": 651, "t": "12:10", "e": "12:40", "st": "Mainstage", "title": "The Signal Layer: What to Build When Anything Can Be Built", "who": "<b>Lena Hall</b> · Akamai", "ty": "talk"},
+    {"id": 652, "t": "12:50", "e": "13:20", "st": "Stage 2", "title": "200 OK: Payment settled, resource delivered", "who": "<b>Brian Whippo</b> · Algorand", "ty": "talk"},
+    {"id": 695, "t": "13:30", "e": "14:00", "st": "Stage 11", "title": "Generative UIs and AI Assistants for Your Angular Applications", "who": "<b>Manfred Steyer</b> · ANGULARarchitects.io", "ty": "talk"},
+    {"id": 697, "t": "13:30", "e": "14:00", "st": "Stage 13", "title": "Beyond authentication: an open-source trust model for the agentic web", "who": "<b>Alexander Günsche</b> (AWS) · <b>Sabrina Engling</b> (Trusted Shops SE)", "ty": "talk"},
+    {"id": 720, "t": "14:15", "e": "14:20", "st": "Airstream 1", "title": "Beyond LLM Agents: A World Model for Visual Software Testing", "who": "<b>Manuel Weichselbaum</b> · anyconcept", "ty": "talk"},
+    {"id": 658, "t": "14:50", "e": "15:20", "st": "Stage 1", "title": "Speed up your CI/CD pipelines by caching build & runtime artifacts", "who": "<b>Thijs Feryn</b> · Varnish Software", "ty": "talk"},
+    {"id": 739, "t": "14:55", "e": "15:00", "st": "Airstream 1", "title": "Your AI Ships Code Faster Than Anyone Can Review It", "who": "<b>Rasmus Klärck</b> · Oplane", "ty": "talk"},
+    {"id": 745, "t": "15:30", "e": "16:00", "st": "Stage 3", "sp": "AWS", "title": "Designing high quality software with AI", "who": "<b>Brian Lovin</b> · Notion", "ty": "talk"},
+    {"id": 748, "t": "15:30", "e": "16:00", "st": "Stage 6", "sp": "Microsoft", "title": "Is it still C#? Practical systems programming with .NET (war stories included)", "who": "<b>Szymon Kulec</b> · RavenDB", "ty": "talk"},
+    {"id": 777, "t": "16:10", "e": "16:40", "st": "Stage 10", "sp": "TikTok", "title": "Keeping applications secure by evolving OAuth 2.0 and OpenID Connect", "who": "<b>Alexander Schwartz</b> · IBM", "ty": "talk"},
+    {"id": 773, "t": "16:10", "e": "16:40", "st": "Stage 6", "sp": "Microsoft", "title": "Practical tips for keeping your C# code base clean", "who": "<b>Dennis Doomen</b> · Aviva Solutions", "ty": "talk"},
+    {"id": 776, "t": "16:10", "e": "16:40", "st": "Stage 9", "title": "Cutting LLM Costs Without Cutting Quality: How to Beat Proprietary LLMs with Fine-Tuned Open Source", "who": "<b>Viktoria Semaan</b> · databricks", "ty": "talk"},
+    {"id": 783, "t": "16:50", "e": "17:20", "st": "Mainstage", "title": "Shipping with Confidence: Observability and Quality at Scale", "who": "Panel · <b>Mirko Novakovic</b> (Dash0) · <b>Prince Kohli</b> (Sauce Labs) · <b>Daniel Gebler</b> (Picnic) · <b>Christian Heilmann</b> (WeAreDevelopers)", "ty": "panel"},
+    {"id": 785, "t": "16:50", "e": "17:20", "st": "Stage 2", "title": "The Migration Cookbook", "who": "<b>Robert Lehmann</b> · Google", "ty": "talk"},
+    {"id": 789, "t": "16:50", "e": "17:20", "st": "Stage 6", "sp": "Microsoft", "title": "Code that writes code - .NET Source generators", "who": "<b>Glenn F. Henriksen</b> · Justify", "ty": "talk"},
+    {"id": 799, "t": "17:30", "e": "18:00", "st": "Mainstage", "title": "After the Framework Wars: What’s Next for Web Development", "who": "Panel · <b>Edith Harbaugh</b> (LaunchDarkly) · <b>Seth Webster</b> (Expo) · <b>Victor Savkin</b> (Nx) · <b>Francesco Ciulla</b> (Head of DevRel)", "ty": "panel"},
+    {"id": 809, "t": "17:30", "e": "18:00", "st": "Stage 10", "sp": "TikTok", "title": "Post-Quantum Cryptography: Preparing for Q-Day", "who": "<b>Tim Schade</b> · GFT Technologies", "ty": "talk"},
+    {"id": 805, "t": "17:30", "e": "18:00", "st": "Stage 6", "sp": "Microsoft", "title": "\".Net is too slow\" was not an option", "who": "<b>Tomasz Woznica</b> · mBank", "ty": "talk"}
   ];
 
-  // Friday (Day 2) picks — waiting on your saved list. Same shape as THU above.
+  // Friday (Day 2) picks — from your WeAreDevelopers bookmarks. Same shape as THU.
   const FRI = [
+    {"id": 820, "t": "09:00", "e": "09:30", "st": "Mainstage", "title": "Building the Next Generation of Software", "who": "<b>Des Traynor</b> · Fin", "ty": "keynote", "feat": 1},
+    {"id": 821, "t": "09:00", "e": "09:30", "st": "Stage 1", "title": "Self-service Quality: QA Without QA", "who": "<b>Ondřej Gróf</b> · Canva", "ty": "talk"},
+    {"id": 824, "t": "09:00", "e": "09:30", "st": "Stage 4", "title": "Decode Your People: Using PCM to Build High-Performance Teams", "who": "<b>Chris Redmond</b> · RedOwl Talent", "ty": "talk"},
+    {"id": 827, "t": "09:00", "e": "09:30", "st": "Stage 7", "title": "An Opinionated Guide to Bulletproof APIs", "who": "<b>Rustam Mehmandarov</b> · MILES", "ty": "talk"},
+    {"id": 850, "t": "09:40", "e": "10:10", "st": "Airstream 2", "title": "Making Documentation AI-Ready: Preparing Your Docs for the LLM Era", "who": "<b>Edvin Teskeredzic</b> · Infobip", "ty": "talk"},
+    {"id": 835, "t": "09:40", "e": "10:10", "st": "Mainstage", "title": "Evolving the developer experience in the age of AI", "who": "<b>Thomas Jung</b> & <b>Michael Ameling</b> · SAP", "ty": "talk", "feat": 1},
+    {"id": 836, "t": "09:40", "e": "10:10", "st": "Stage 1", "title": "MCP doesn’t suck — your agent does", "who": "<b>Jan Curn</b> · Apify", "ty": "talk"},
+    {"id": 846, "t": "09:40", "e": "10:10", "st": "Stage 11", "title": "Best Practices for AI-Assisted Development of Distributed Systems", "who": "<b>Przemysław Ładyński</b> · Graftcode", "ty": "talk"},
+    {"id": 842, "t": "09:40", "e": "10:10", "st": "Stage 7", "title": "Rest API Antipatterns", "who": "<b>Wekoslav Stefanovski</b> · Sourcico", "ty": "talk"},
+    {"id": 861, "t": "10:20", "e": "10:50", "st": "Mainstage", "title": "20 Years of Solving Unsolvable Problems", "who": "<b>Werner Vogels</b> · Amazon.com", "ty": "talk"},
+    {"id": 868, "t": "10:20", "e": "10:50", "st": "Stage 7", "title": "Introducing JSON Structure", "who": "<b>Clemens Vasters</b> · Microsoft", "ty": "talk"},
+    {"id": 686, "t": "11:00", "e": "11:30", "st": "Stage 2", "title": "Robots Among us: Advances in AI for Everyday Androids", "who": "<b>Florian Gather</b> & <b>Thomas Endres</b> · TNG", "ty": "talk"},
+    {"id": 880, "t": "11:00", "e": "11:30", "st": "Stage 3", "sp": "AWS", "title": "It's Dangerous to Code Alone! Take This: Developer's AI Survival Guide", "who": "<b>Salih Gueler</b> · AWS", "ty": "talk"},
+    {"id": 730, "t": "11:00", "e": "11:30", "st": "Stage 9", "title": "Code Is Cheap. Software Isn’t.", "who": "<b>Markus Eisele</b> · IBM", "ty": "talk"},
+    {"id": 895, "t": "11:40", "e": "12:10", "st": "Stage 5", "title": "Design Patterns For AI Products in 2026", "who": "<b>Vitaly Friedman</b> · Smashing Magazine", "ty": "talk"},
+    {"id": 896, "t": "11:40", "e": "12:10", "st": "Stage 7", "title": "REST, GraphQL, gRPC, and more: A comparison of modern API styles", "who": "<b>Florian Bader</b> · Lunaris Digital Solutions", "ty": "talk"},
+    {"id": 903, "t": "11:40", "e": "12:10", "st": "Tech Leaders", "title": "AI in High-Stakes Industries: Lessons Learned", "who": "Panel · <b>Alexandre Guenoun</b> (Kiro) · <b>Jaipal Singh</b> (Prem AI) · <b>Nicolò Robba</b> (Prima) · <b>Tomislav Tipurić</b> (Nephos)", "ty": "panel"},
+    {"id": 917, "t": "12:20", "e": "12:50", "st": "Stage 12", "title": "Future of Mobile AI. What On-Device Intelligence Means for App Developers", "who": "<b>Sasha Denisov</b> · Brainform.ai", "ty": "talk"},
+    {"id": 915, "t": "12:20", "e": "12:50", "st": "Stage 6", "sp": "Microsoft", "title": "AI Won't Fix Your Engineering Culture", "who": "<b>Julia Kordick</b> · Microsoft", "ty": "talk"},
+    {"id": 920, "t": "12:20", "e": "12:50", "st": "Tech Leaders", "title": "Inside Look: AI & Developer Productivity Programs in a 1,500+ Engineering Team", "who": "<b>Ellen Jones</b> (DX) · <b>Kristjan Ulst</b> (Arrive)", "ty": "talk"},
+    {"id": 924, "t": "13:00", "e": "13:30", "st": "Stage 1", "title": "Java Sucks (So C# Didn't Have To)", "who": "<b>Adele Carpenter</b> · Trifork Amsterdam", "ty": "talk"},
+    {"id": 926, "t": "13:00", "e": "13:30", "st": "Stage 3", "sp": "AWS", "title": "REST In Peace: Why LLMs Can't CRUD", "who": "<b>Martin Sakowski</b> (Amazon Web Services) · <b>Martin Karrer</b> (AWS)", "ty": "talk"},
+    {"id": 930, "t": "13:00", "e": "13:30", "st": "Stage 7", "title": "When Value Becomes Programmable: A Developer's Guide to Tokenization", "who": "<b>Luke Forrest</b> · Hashgraph", "ty": "talk"},
+    {"id": 939, "t": "13:40", "e": "14:10", "st": "Mainstage", "title": "None of Us Is As Dumb As All of Us: Community And Knowledge Go Hand In Hand", "who": "<b>Benjamin Dumke-von der Ehe</b> (Stacks Labs) · <b>Jeff Atwood</b>", "ty": "talk", "feat": 1},
+    {"id": 940, "t": "13:40", "e": "14:10", "st": "Stage 1", "title": "Context is all you need", "who": "<b>Raphael De Lio</b> & <b>Samuel Agbede</b> · Redis", "ty": "talk"},
+    {"id": 941, "t": "13:40", "e": "14:10", "st": "Stage 3", "sp": "AWS", "title": "Building APIs for Agents vs Systems. Is MCP the answer?", "who": "<b>Adam Bird</b> · Cronofy", "ty": "talk"},
+    {"id": 946, "t": "13:40", "e": "14:10", "st": "Stage 8", "sp": "Red Hat", "title": "Stop Parsing Strings: Treating LLMs Like Type-Safe Microservices", "who": "<b>André Behrens</b> · Atos", "ty": "talk"},
+    {"id": 947, "t": "13:40", "e": "14:10", "st": "Stage 9", "title": "The Missing Layer Between Enterprise Data and AI Agents", "who": "<b>Jannis Eickenroth</b> & <b>Sebastian Klenke</b> · Finanz Informatik", "ty": "talk"},
+    {"id": 955, "t": "14:20", "e": "14:50", "st": "Stage 4", "title": "API, MCP or MCP App? Choosing the right surface for AI agents", "who": "<b>Rishabh Budhiraja</b> & <b>Rishi Deorukhkar</b> · idealo Internet", "ty": "talk"},
+    {"id": 988, "t": "15:00", "e": "15:30", "st": "Stage 11", "title": "Teaching an LLM to review code … like a Senior Engineer!", "who": "<b>Kesha Mykhailov</b> · Fin", "ty": "talk"},
+    {"id": 993, "t": "15:40", "e": "16:10", "st": "Mainstage", "title": "Software That Fixes Itself", "who": "<b>Milin Desai</b> (Sentry) · <b>Rodrigue Schäfer</b> (Delivery Hero)", "ty": "talk", "feat": 1},
+    {"id": 1003, "t": "15:40", "e": "16:10", "st": "Stage 11", "title": "AI Driven Development", "who": "<b>David Tielke</b> · David-Tielke.de", "ty": "talk"},
+    {"id": 1000, "t": "15:40", "e": "16:10", "st": "Stage 7", "title": "User 1st! Technology 2nd! Stop building AI nobody uses - start delivering real business outcomes", "who": "<b>Mateusz Gren</b> (Atos Austria) · <b>Peter Hock</b> (Atos)", "ty": "talk"},
+    {"id": 1015, "t": "16:20", "e": "16:50", "st": "Stage 9", "title": "The Sound of Privacy – What Your Spotify Data Reveals About You", "who": "<b>Dennis Schulz</b> & <b>Thomas Hugle</b> · TNG Technology Consulting", "ty": "talk"},
+    {"id": 1022, "t": "17:00", "e": "17:30", "st": "Mainstage", "title": "5 Things in Tech That Matter Now - 2026 Edition", "who": "<b>Christian Heilmann</b> · WeAreDevelopers", "ty": "talk", "feat": 1},
+    {"id": 1054, "t": "19:00", "e": "00:00", "st": "—", "title": "Official Aftershow Party @ Ritter Butzke", "who": "", "ty": "talk"}
   ];
 
   const DAYS = {
@@ -602,7 +628,8 @@
     render(search.value);
     updateProgress();
     updateNextUp();
-    window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    const reduce = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
   }
 
   const search = document.querySelector(".search");
