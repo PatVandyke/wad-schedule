@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My WeAreDevelopers 2026 Schedule</title>
 <style>
   :root {
@@ -34,7 +35,8 @@
 
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--paper); color: var(--ink);
-    font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   .wrap { max-width: 940px; margin: 0 auto; padding: 0 20px 96px; }
 
   header.masthead { border-bottom: 2px solid var(--ink); padding: 40px 0 22px; }
@@ -116,6 +118,23 @@
     font-size: 12px; letter-spacing: .04em; padding: 9px 13px; border-radius: 999px; cursor: pointer;
     background: var(--board); color: var(--board-ink); border: 1px solid var(--board); box-shadow: var(--shadow); }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  /* Phone layout: reclaim width, full-width search, calmer spacing */
+  @media (max-width: 600px) {
+    .wrap { padding: 0 14px 80px; }
+    header.masthead { padding: 26px 0 18px; }
+    .sub { font-size: 14px; }
+    .stat { flex: 1 1 46%; padding: 11px 13px; }
+    .stat .v { font-size: 19px; }
+    .controls { flex-wrap: wrap; gap: 10px; padding: 14px 0 10px; }
+    .legend { order: 1; gap: 12px; }
+    .search { order: 2; margin-left: 0; flex-basis: 100%; max-width: none; }
+    li.slot { grid-template-columns: 44px 1fr; gap: 14px; padding-bottom: 20px; }
+    .time { font-size: 13px; }
+    .card { padding: 11px 13px; }
+    .title, .who { overflow-wrap: anywhere; }
+    .toggle { right: 12px; bottom: 12px; }
+  }
 </style>
 
 <div class="wrap">
