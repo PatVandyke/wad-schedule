@@ -65,6 +65,8 @@
   .swatch { width: 9px; height: 9px; border-radius: 50%; }
   .swatch.clash { background: var(--warn); }
   .swatch.solo { background: var(--card); border: 2px solid var(--line); }
+  .swatch.now { background: var(--accent); }
+  .swatch.soon { background: var(--warn); }
   .search { margin-left: auto; flex: 1 1 180px; min-width: 140px; max-width: 260px;
     font-family: var(--mono); font-size: 13px; padding: 9px 12px; background: var(--card);
     color: var(--ink); border: 1px solid var(--line); border-radius: 8px; }
@@ -104,6 +106,18 @@
   .pill.k { background: var(--accent-soft); color: var(--accent); border-color: transparent; font-weight: 700; }
   .pill.panel { border-style: dashed; }
   .pill.play { color: var(--accent); }
+  .pill.now { background: var(--accent); color: #fff; border-color: transparent; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 5px; }
+  .pill.soon { background: var(--warn-soft); color: var(--warn); border-color: transparent; font-weight: 700; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #fff; display: inline-block;
+    animation: pulse 1.8s ease-out infinite; }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(255,255,255,.6); }
+    70%  { box-shadow: 0 0 0 6px rgba(255,255,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+  }
+  .card.live { border-color: var(--accent); box-shadow: var(--shadow), inset 3px 0 0 var(--accent); }
+  .card.soon { border-color: var(--warn); box-shadow: var(--shadow), inset 3px 0 0 var(--warn); }
   .title { font-size: 15px; font-weight: 700; margin: 0; letter-spacing: -.01em;
     line-height: 1.3; text-wrap: pretty; }
   .title a { color: inherit; text-decoration: none; }
@@ -117,7 +131,7 @@
   .toggle { position: fixed; right: 16px; bottom: 16px; z-index: 40; font-family: var(--mono);
     font-size: 12px; letter-spacing: .04em; padding: 9px 13px; border-radius: 999px; cursor: pointer;
     background: var(--board); color: var(--board-ink); border: 1px solid var(--board); box-shadow: var(--shadow); }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 
   /* Phone layout: full-width stacked cards, time as a slot header, larger type */
   @media (max-width: 640px) {
@@ -167,6 +181,8 @@
     <div class="legend">
       <span><i class="swatch clash"></i>clash &mdash; choose one</span>
       <span><i class="swatch solo"></i>no clash</span>
+      <span><i class="swatch now"></i>live now</span>
+      <span><i class="swatch soon"></i>soon</span>
     </div>
     <input class="search" type="search" placeholder="filter picks&hellip;" aria-label="Filter sessions">
   </div>
@@ -224,6 +240,16 @@
   const YT = "https://www.youtube.com/results?search_query=WeAreDevelopers+2026+";
   const tyLabel = { keynote:"Keynote", panel:"Panel", lightning:"⚡ Lightning" };
 
+  // "Live now" / "Soon" highlighting — evaluated in Berlin time (event tz), so it's
+  // correct no matter what timezone the viewer's device is set to.
+  const SOON_MIN = 30;
+  const toMin = hhmm => { const [h, m] = hhmm.split(":").map(Number); return h * 60 + m; };
+  function nowMinBerlin() {
+    const p = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Berlin",
+      hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(new Date());
+    return (+p.find(x => x.type === "hour").value) * 60 + (+p.find(x => x.type === "minute").value);
+  }
+
   function stageRank(st) {
     if (st === "Mainstage") return -1;
     const m = st.match(/^Stage (\d+)/);
@@ -238,8 +264,20 @@
     kick.push('<span class="pill stage">' + s.st + '</span>');
     if (s.sp) kick.push('<span class="pill">' + s.sp + '</span>');
     kick.push('<span class="pill play">▶</span>');
+
+    // Time-based status (Berlin tz): live if underway, soon if starting within SOON_MIN.
+    const now = nowMinBerlin(), a = toMin(s.t), b = toMin(s.e);
+    let state = "";
+    if (now >= a && now < b) {
+      state = " live";
+      kick.unshift('<span class="pill now"><i class="dot"></i>Live now</span>');
+    } else if (a > now && a - now <= SOON_MIN) {
+      state = " soon";
+      kick.unshift('<span class="pill soon">Soon &middot; in ' + (a - now) + 'm</span>');
+    }
+
     const title = '<a href="' + YT + encodeURIComponent(s.title) + '" target="_blank" rel="noopener">' + s.title + '</a>';
-    return '<div class="card' + (s.feat ? ' feat' : '') + '">' +
+    return '<div class="card' + (s.feat ? ' feat' : '') + state + '">' +
       '<div class="kicker">' + kick.join('') + '</div>' +
       '<p class="title">' + title + '</p>' +
       (s.who ? '<p class="who">' + s.who + '</p>' : '') + '</div>';
@@ -264,6 +302,8 @@
   const search = document.querySelector(".search");
   search.addEventListener("input", () => render(search.value));
   render("");
+  // Re-render on a timer so "Live now"/"Soon" and the countdown stay current.
+  setInterval(() => render(search.value), 30000);
 
   const root = document.documentElement;
   document.getElementById("themeToggle").addEventListener("click", () => {
