@@ -128,7 +128,7 @@
   /* Clash slots: cards laid out horizontally in a scroll-snap rail. The card you
      scroll to is remembered per slot (survives refresh) = your pick for that slot. */
   .rail { position: relative; display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
-    padding: 3px 2px 10px; margin: 0 -2px;
+    padding: 3px 2px 10px; margin: 0;
     scrollbar-width: thin; scrollbar-color: var(--line) transparent;
     -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
   .rail > .card { flex: 0 0 82%; scroll-snap-align: start; }
@@ -170,7 +170,8 @@
     .sub { font-size: 14.5px; }
     .stat { flex: 1 1 46%; padding: 11px 13px; }
     .stat .v { font-size: 19px; }
-    .controls { flex-wrap: wrap; gap: 10px; padding: 14px 0 10px; }
+    /* Full-bleed background so nothing scrolls into view beside the sticky panel */
+    .controls { flex-wrap: wrap; gap: 10px; margin: 0 -12px; padding: 14px 12px 10px; }
     .legend { order: 1; gap: 12px; }
     .search { order: 2; margin-left: 0; flex-basis: 100%; max-width: none;
       font-size: 16px; padding: 11px 13px; }        /* 16px prevents iOS focus-zoom */
